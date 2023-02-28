@@ -127,3 +127,12 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# specific folder
+keys/*
+sensor_locations/*
+logfiles/*
+order_db/*
+data/*
+keys/*
+.vscode/*
