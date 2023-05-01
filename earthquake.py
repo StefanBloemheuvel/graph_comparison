@@ -3,8 +3,7 @@
 import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('dataset', help='Which dataset to choose', choices=['ci','cw'])
-parser.add_argument('algorithm', help='Which algorithm to use', choices=['gabriel','kmeans_own','optics','knn_weighted','knn_unweighted','minmax','relative_neighborhood','dbscan','correlation_top','correlation_new'])
-
+parser.add_argument('algorithm', help='Which algorithm to use', choices=['gabriel','kmeans','optics','knn_weighted','knn_unweighted','minmax','relative_neighborhood','gaussian','dtw','correlation','mic'])
 args = parser.parse_args()
 # args = parser.parse_args(args=[])
 print(args.dataset)
@@ -50,21 +49,24 @@ if args.algorithm == 'gabriel':
     options_list = [0]
 if args.algorithm == 'relative_neighborhood':
     options_list = [0]
-if args.algorithm == 'kmeans_own':
-    options_list = [i for i in range(2,7)]
+if args.algorithm == 'gaussian':
+    options_list = [round(i,2) for i in np.arange(0,1,0.1)]
+if args.algorithm == 'kmeans':
+    options_list = [i for i in range(15,40)]
 if args.algorithm == 'optics':
-    options_list = [i for i in range(10,30)]
+    options_list = [i for i in range(16,40)]
 if args.algorithm == 'knn_weighted':
-    options_list = [i for i in range(2,16)]
+    options_list = [i for i in range(2,40)]
 if args.algorithm == 'knn_unweighted':
-    options_list = [i for i in range(2,16)]
-if args.algorithm == 'dbscan':
-    options_list = [i for i in range(2,16)]
+    options_list = [i for i in range(2,40)]
+# if args.algorithm == 'dbscan':
+    # options_list = [i for i in range(2,16)]
 if args.algorithm == 'minmax':
     options_list = [round(i,2) for i in np.arange(0.1,1,0.1)]
-if args.algorithm == 'correlation_top' or args.algorithm == 'correlation_new':
-    options_list = [round(i,2) for i in np.arange(0.01,0.2,0.01)]
-
+# if args.algorithm == 'correlation_top' or args.algorithm == 'correlation_new' or args.algorithm == 'dtw_segments':
+    # options_list = [round(i,2) for i in np.arange(0.15,0.95,0.1)]
+if args.algorithm == 'dtw' or args.algorithm == 'correlation' or args.algorithm == 'mic':
+    options_list = [round(i,2) for i in np.arange(0.05,0.95,0.05)]
 print(f'went for {args.dataset} and {args.algorithm} \n')
 print(f' options are = {options_list}')
 
@@ -235,6 +237,8 @@ from geoconnector.newest_graph_maker import graph_generator
         
 test_set_size = 0.2
 for i in options_list:
+    print()
+    print()
     print(f'current combination = {i}')
     if args.dataset == 'ci':
         inputs = np.float32(np.load('data/inputs_ci.npy', allow_pickle = True))
@@ -252,9 +256,9 @@ for i in options_list:
     graph_generator_obj = graph_generator()
     if args.algorithm == 'gabriel':
         graph_generator_obj.gabriel(f'sensor_locations/sensor_locations_{args.dataset}.csv')
-    if args.algorithm == 'kmeans_own':
+    if args.algorithm == 'kmeans':
         print('went for kmeans_own')
-        graph_generator_obj.kmeans_own(f'sensor_locations/sensor_locations_{args.dataset}.csv',num_clusters=i)
+        graph_generator_obj.kmeans(f'sensor_locations/sensor_locations_{args.dataset}.csv',num_clusters=i)
     if args.algorithm == 'optics':
         graph_generator_obj.optics(f'sensor_locations/sensor_locations_{args.dataset}.csv', min_samples=i)
     if args.algorithm == 'knn_weighted':
@@ -265,10 +269,10 @@ for i in options_list:
         graph_generator_obj.minmax(f'sensor_locations/sensor_locations_{args.dataset}.csv', cutoff=i)
     if args.algorithm == 'dbscan':
         graph_generator_obj.dbscan(f'sensor_locations/sensor_locations_{args.dataset}.csv', eps=i, min_samples=3)
-    if args.algorithm == 'new_gaussian':
-        graph_generator_obj.new_gaussian(f'sensor_locations/sensor_locations_{args.dataset}.csv')
     if args.algorithm == 'gaussian':
-        graph_generator_obj.gaussian(f'sensor_locations/sensor_locations_{args.dataset}.csv')
+        graph_generator_obj.gaussian(f'sensor_locations/sensor_locations_{args.dataset}.csv',i)
+    # if args.algorithm == 'gaussian':
+        # graph_generator_obj.gaussian(f'sensor_locations/sensor_locations_{args.dataset}.csv')
     if args.algorithm == 'relative_neighborhood':
         graph_generator_obj.relative_neighborhood(f'sensor_locations/sensor_locations_{args.dataset}.csv')
     if args.algorithm == 'kmeans_own':
@@ -276,6 +280,10 @@ for i in options_list:
     if args.algorithm == 'correlation_top':
         graph_generator_obj.correlation_top(f'sensor_locations/sensor_locations_{args.dataset}.csv', f'sensor_locations/inputs_{args.dataset}.npy',threshold=i)
     
+    if args.algorithm == 'dtw' or args.algorithm == 'correlation' or args.algorithm == 'mic' and args.dataset in ['ci','cw']:
+        print(f'went for no clips')
+        graph_generator_obj.from_signal(f'sensor_locations/sensor_locations_{args.dataset}.csv', f'sensor_locations/inputs_{args.dataset}.npy', variant=args.algorithm, clips=False,threshold=i)
+
     graph_generator_obj.create_normalized_laplacian_matrix()
     graph_generator_obj.summary_statistics()
     if graph_generator_obj.number_of_edges == 0:
@@ -283,6 +291,16 @@ for i in options_list:
         print('\n' * 5)
         continue
     
+    if graph_generator_obj.data.shape[0] >= graph_generator_obj.number_of_edges:
+        print('only self edges')
+        print(graph_generator_obj.data.shape[0])
+        print(graph_generator_obj.number_of_edges)
+        print('\n' * 5)
+        continue
+    else:
+        print(f'number of edges is > {graph_generator_obj.data.shape[0]}, namely {graph_generator_obj.number_of_edges}')
+        print('\n' * 5)
+        
     adj2 = graph_generator_obj.normalized_laplacian_matrix
     print(f'graph after creation:')
     print(f'{adj2[0:5,0:5]}')
@@ -374,6 +392,11 @@ for i in options_list:
         new_predictions = np.swapaxes(new_predictions,0,1)
         
         print(new_predictions.shape)
+        
+        # Function to calculate mean absolute error
+        def MAE(y_true, y_pred):
+            return np.mean(abs(y_true - y_pred))
+        
         def MSE(Y, YH):
             return np.square(Y - YH).mean()
         mse = MSE(new_predictions,test_targets)
@@ -404,6 +427,6 @@ for i in options_list:
     # with open(f"individual_results/{args.algorithm}_{args.dataset}.csv", "a") as text_file:
     #     print(f'{print_time()},{sys.argv[0]},PGV,{args.dataset},{args.algorithm},{np.array(mse_list).mean():.3f},{args.random_state_here}', file=text_file)
 
-    with open(f"new_earthquake.csv", "a") as text_file:
-        print(f'{print_time()},{args.dataset},{args.algorithm},{MSE(new_predictions, test_targets):.4f},{i},{graph_generator_obj.number_of_edges}', file=text_file)
+    with open(f"final_results.csv", "a") as text_file:
+        print(f'{print_time()},{args.dataset},{args.algorithm},{i},{MSE(new_predictions, test_targets):.4f},{MAE(new_predictions, test_targets):.4f},{graph_generator_obj.number_of_edges}', file=text_file)
 
