@@ -2,4 +2,7 @@
 
 #### Authors: Stefan Bloemheuvel, Jurgen van den Hoogen and Martin Atzmueller
 
-Text
+data can be found at = https://zenodo.org/record/7900964
+
+the inputs files should be put in the sensor locations folder.
+
