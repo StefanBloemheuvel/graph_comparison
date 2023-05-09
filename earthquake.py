@@ -29,18 +29,6 @@ if len(tf.config.experimental.list_physical_devices('GPU')) > 0:
 else:
     print('no GPU available, so exit')
     sys.exit(0)
-# import argparse
-# parser = argparse.ArgumentParser()
-# parser.add_argument('dataset', help='Which network_choice to use', choices=['ci','cw'], nargs='?', default='ci')
-# parser.add_argument('algorithm', help='Which algorithm to use', choices=['gabriel','kmeans_own','optics','knn_weighted','knn_unweighted','minmax','dbscan','new_gaussian','gaussian','relative_neighborhood','correlation_top'], nargs='?', default='gabriel')
-# parser.add_argument('random_state_here', help='Which random state to choose', choices=[1,2,3,4,5], nargs='?',  default=1,type=int)
-# parser.add_argument('k', help='k', type=int)
-
-# args = parser.parse_args()
-# print('network = ',args.dataset)
-# print('algorithm = ',args.algorithm)
-# print('random state = ',args.random_state_here)
-# print('k  = ',args.k)
 
 import numpy as np
 import sys
@@ -267,8 +255,6 @@ for i in options_list:
         graph_generator_obj.dbscan(f'sensor_locations/sensor_locations_{args.dataset}.csv', eps=i, min_samples=3)
     if args.algorithm == 'gaussian':
         graph_generator_obj.gaussian(f'sensor_locations/sensor_locations_{args.dataset}.csv',i)
-    # if args.algorithm == 'gaussian':
-        # graph_generator_obj.gaussian(f'sensor_locations/sensor_locations_{args.dataset}.csv')
     if args.algorithm == 'relative_neighborhood':
         graph_generator_obj.relative_neighborhood(f'sensor_locations/sensor_locations_{args.dataset}.csv')
     if args.algorithm == 'kmeans_own':
@@ -418,11 +404,7 @@ for i in options_list:
             f.write(f'time,dataset,algorithm,k,mse,number_of_edges\n')
         else:
             print('file existed, appending')
-
-
-    # with open(f"individual_results/{args.algorithm}_{args.dataset}.csv", "a") as text_file:
-    #     print(f'{print_time()},{sys.argv[0]},PGV,{args.dataset},{args.algorithm},{np.array(mse_list).mean():.3f},{args.random_state_here}', file=text_file)
-
+            
     with open(f"final_results.csv", "a") as text_file:
         print(f'{print_time()},{args.dataset},{args.algorithm},{i},{MSE(new_predictions, test_targets):.4f},{MAE(new_predictions, test_targets):.4f},{graph_generator_obj.number_of_edges}', file=text_file)
 
