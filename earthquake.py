@@ -50,21 +50,17 @@ if args.algorithm == 'gabriel':
 if args.algorithm == 'relative_neighborhood':
     options_list = [0]
 if args.algorithm == 'gaussian':
-    options_list = [round(i,2) for i in np.arange(0,1,0.1)]
+    options_list = [round(i,2) for i in np.arange(0.05,0.95,0.05)]
 if args.algorithm == 'kmeans':
-    options_list = [i for i in range(15,40)]
+    options_list = [i for i in range(2,40)]
 if args.algorithm == 'optics':
-    options_list = [i for i in range(16,40)]
+    options_list = [i for i in range(2,40)]
 if args.algorithm == 'knn_weighted':
     options_list = [i for i in range(2,40)]
 if args.algorithm == 'knn_unweighted':
     options_list = [i for i in range(2,40)]
-# if args.algorithm == 'dbscan':
-    # options_list = [i for i in range(2,16)]
 if args.algorithm == 'minmax':
-    options_list = [round(i,2) for i in np.arange(0.1,1,0.1)]
-# if args.algorithm == 'correlation_top' or args.algorithm == 'correlation_new' or args.algorithm == 'dtw_segments':
-    # options_list = [round(i,2) for i in np.arange(0.15,0.95,0.1)]
+    options_list = [round(i,2) for i in np.arange(0.05,0.95,0.05)]
 if args.algorithm == 'dtw' or args.algorithm == 'correlation' or args.algorithm == 'mic':
     options_list = [round(i,2) for i in np.arange(0.05,0.95,0.05)]
 print(f'went for {args.dataset} and {args.algorithm} \n')
