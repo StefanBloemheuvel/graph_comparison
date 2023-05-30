@@ -1,6 +1,6 @@
 numpy
 scipy==1.8.0
-streamlit==1.5.0
+streamlit
 scikit-learn
 scikit-learn
 matplotlib==3.5.1
