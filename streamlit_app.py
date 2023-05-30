@@ -63,7 +63,7 @@ algorithm = st.sidebar.radio(
 )
 dataset = st.sidebar.radio(
     "Which dataset would you like to use?",
-    ("la", "bay", "air","ci","cw"), horizontal=True
+    ("la", "bay","ci","cw"), horizontal=True
 )
 
 if algorithm not in ['Gabriel','Relative Neighborhood']:
@@ -90,20 +90,14 @@ with st.spinner('Wait for it...'):
         graph_generator_obj.relative_neighborhood(selected_file[0])
     if algorithm == 'knn':
         graph_generator_obj.knn_unweighted(selected_file[0], k=parameter)
-    # if algorithm == 'Distance-Delimiter':
-        # graph_generator_obj.distance_limiter(selected_file[0], k=parameter)
     if algorithm == 'Optics':
         graph_generator_obj.optics(selected_file[0], min_samples=parameter)
-    # if algorithm == 'DBSCAN':
-        # graph_generator_obj.dbscan(selected_file[0], min_samples=parameter)
     if algorithm == 'MinMax':
         graph_generator_obj.minmax(selected_file[0], cutoff=parameter)
     if algorithm == 'Gaussian':
         graph_generator_obj.gaussian(selected_file[0], normalized_k=parameter)
     if algorithm == 'Kmeans':
         graph_generator_obj.kmeans(selected_file[0], num_clusters=parameter)
-    # if algorithm == 'greedy-spanner':
-        # graph_generator_obj.greedy_spanner(selected_file[0], t=parameter)
     
 end = time.time()
 
