@@ -4,7 +4,7 @@
 
 #### Authors: Stefan Bloemheuvel, Jurgen van den Hoogen and Martin Atzmueller
 
-[streamlit demo page]([https://www.google.com](https://stefanbloemheuvel-graph-comparison-streamlit-app-dplan6.streamlit.app/))
+[I'm an inline-style link](https://stefanbloemheuvel-graph-comparison-streamlit-app-dplan6.streamlit.app/)
 
 data can be found at = https://zenodo.org/record/7900964
 
