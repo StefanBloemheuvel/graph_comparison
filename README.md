@@ -4,7 +4,7 @@
 
 #### Authors: Stefan Bloemheuvel, Jurgen van den Hoogen and Martin Atzmueller
 
-DEMO PAGE (not all techniques included) = [streamlit page]([https://www.google.com](https://stefanbloemheuvel-graph-comparison-streamlit-app-dplan6.streamlit.app/)) \\
+[demo streamlit page, not all techniques included]([https://www.google.com](https://stefanbloemheuvel-graph-comparison-streamlit-app-dplan6.streamlit.app/))
 data can be found at = https://zenodo.org/record/7900964
 
 the inputs_la, input_bay, inputs_ci and inputs_cw files should be put in the sensor locations folder.
