@@ -2,7 +2,7 @@
 import os
 import sys
 import pandas as pd
-from geopy.distance import geodesic
+# from geopy.distance import geodesic
 import networkx as nx
 import numpy as np
 np.set_printoptions(suppress=True)
@@ -31,6 +31,11 @@ from minepy import pstats, cstats
 from numpy import arctan2, cos, sin, sqrt, pi, power, append, diff, deg2rad
 # other dependencies
 # geopandas
+from sklearn.neighbors import DistanceMetric
+dist = DistanceMetric.get_metric('haversine')
+from math import sin, cos, sqrt, atan2, radians
+
+R = 6373.0
 
 class graph_generator:
     def load_location_data(self, path):
@@ -61,7 +66,12 @@ class graph_generator:
             for idx2, itm2 in self.data[['station','lat','lon']].iterrows():
                         pos1 = (itm1[1],itm1[2])
                         pos2 = (itm2[1],itm2[2])
-                        distance = geodesic(pos1, pos2,).km
+                        # distance = geodesic(pos1, pos2,).km
+                        X = [[radians(itm1[1]), radians(itm1[2])], [radians(itm2[1]), radians(itm2[2])]]
+                        distance = R * dist.pairwise(X)
+                        distance = np.array(distance).item(1)
+                        # print('distance using sklearn: ', np.array(distance_sklearn).item(1))
+                        # print(distance)
                         if distance != 0: # this filters out self-loops and also the edges between the artificial nodes
                             graph.add_edge(itm1[0], itm2[0], weight=distance)
 
@@ -139,7 +149,10 @@ class graph_generator:
             for idx2, itm2 in self.data[['station','lat','lon']].iterrows():
                     pos1 = (itm1[1],itm1[2])
                     pos2 = (itm2[1],itm2[2])
-                    distance = geodesic(pos1, pos2,).km
+                    # distance = geodesic(pos1, pos2,).km
+                    
+                    X = [[radians(itm1[1]), radians(itm1[2])], [radians(itm2[1]), radians(itm2[2])]]
+                    distance = R * dist.pairwise(X)
                     if distance != 0: # this filters out self-loops and also the edges between the artificial nodes
                         graph.add_edge(itm1[0], itm2[0], weight=distance)
                         
@@ -614,7 +627,7 @@ class graph_generator:
         m.drawmapboundary(fill_color='#2081C3')
         m.fillcontinents(color='#f0efdb',lake_color='#2081C3')
         m.drawparallels(range(int(np.min(self.data['lat'])), int(np.max(self.data['lon'])), 2),linewidth=1.0)
-        m.drawmapscale((np.min(self.data['lon'])-lon_distance/10)+max_distance/1000+1.69,np.min(self.data['lat'])-lat_distance/10,(np.min(self.data['lon'])-lon_distance/5),(np.min(self.data['lat'])-lat_distance/5),100,barstyle='fancy') #max_distance/5
+        # m.drawmapscale((np.min(self.data['lon'])-lon_distance/10)+max_distance/1000+1.69,np.min(self.data['lat'])-lat_distance/10,(np.min(self.data['lon'])-lon_distance/5),(np.min(self.data['lat'])-lat_distance/5),100,barstyle='fancy') #max_distance/5
         nx.draw_networkx_nodes(G = self.networkx_graph, pos = pos, 
                         node_color = 'r', alpha = 1, node_size = node_size)
         if plot_labels:
