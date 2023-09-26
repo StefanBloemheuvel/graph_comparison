@@ -26,7 +26,23 @@ run either the earthquake.py file or traffic.py file for the results.
 models for the forecasting traffic analysis can be found in all_models.py
 
 ## Results 
-You can convert the LaTeX table into a Markdown table for your GitHub page like this:
+The resulting graphs and their characteristics:
+| Method         | CI (741) Edges | CI (741) Density | CW (741) Edges | CW (741) Density | METR-LA (21,321) Edges | METR-LA (21,321) Density | PEMS-BAY (52,650) Edges | PEMS-BAY (52,650) Density |
+|----------------|----------------|------------------|----------------|-------------------|-----------------------|-------------------------|-------------------------|--------------------------|
+| **Signal**     |                |                  |                |                   |                       |                           |                           |                           |
+| Correlation    | 195            | 26.3%            | 42             | 5.7%              | 13,478                | 63.2%                     | 35,644                    | 67.7%                     |
+| DTW            | 536            | 72.3%            | 723            | 97.6%             | 21,365                | 100.2%                    | 26,287                    | 49.9%                     |
+| MIC            | 739            | 99.7%            | 697            | 94.1%             | 21,315                | 100.0%                    | 52,950                    | 100.6%                    |
+| **Location**   |                |                  |                |                   |                       |                           |                           |                           |
+| Gabriel        | 69             | 9.3%             | 66             | 8.9%              | 252                   | 1.2%                      | 410                       | 0.8%                      |
+| Gaussian       | 89             | 12.0%            | 275            | 37.1%             | 12,557                | 58.9%                     | 14,527                    | 27.6%                     |
+| KNN            | 212            | 28.6%            | 439            | 59.2%             | 3,800                 | 17.8%                     | 6,816                     | 12.9%                     |
+| KNN-W          | 672            | 90.7%            | 640            | 86.4%             | 3,118                 | 14.6%                     | 7,030                     | 13.4%                     |
+| K-means        | 48             | 6.5%             | 42             | 5.7%              | 3,097                 | 14.5%                     | 8,025                     | 15.2%                     |
+| MinMax         | 618            | 83.4%            | 533            | 71.9%             | 18,371                | 86.2%                     | 38,098                    | 72.4%                     |
+| Optics         | 780            | 105.3%           | 91             | 12.3%             | 2,110                 | 9.9%                      | 3,144                     | 6.0%                      |
+| RNG            | 105            | 14.2%            | 101            | 13.6%             | 591                   | 2.8%                      | 938                       | 1.8%                      |
+
 
 
 | Method         |               | CI (MAE) | CI (MSE) | CW (MAE) | CW (MSE) | METR-LA (MAE) | METR-LA (MSE) | PEMS-BAY (MAE) | PEMS-BAY (MSE) |
