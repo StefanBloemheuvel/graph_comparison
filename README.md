@@ -11,7 +11,8 @@
 ## Data
 data can be found at = https://zenodo.org/record/7900964
 
-The data can be found at the following "[Link]([https://arxiv.org/pdf/2201.06367.pdf](https://zenodo.org/record/7900964))". 
+The data can be found at the following "[Link]([https://arxiv.org/pdf/2201.06367.pdf](https://zenodo.org/record/7900964)". 
+
 ## Requirements
 * tensorflow
 * tsl
