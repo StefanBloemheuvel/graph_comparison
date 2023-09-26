@@ -28,7 +28,7 @@ models for the forecasting traffic analysis can be found in all_models.py
 ## Results 
 You can convert the LaTeX table into a Markdown table for your GitHub page like this:
 
-```markdown
+
 | Method         |               | CI (MAE) | CI (MSE) | CW (MAE) | CW (MSE) | METR-LA (MAE) | METR-LA (MSE) | PEMS-BAY (MAE) | PEMS-BAY (MSE) |
 |----------------|---------------|----------|----------|----------|----------|---------------|---------------|----------------|----------------|
 | **Signal**     | Correlation   | 0.31     | 0.20     | **0.37** | **0.23** | 3.65          | 54.43         | **1.84**       | 18.49          |
@@ -44,6 +44,6 @@ You can convert the LaTeX table into a Markdown table for your GitHub page like 
 |                | Gabriel       | 0.36     | 0.28     | 0.46     | 0.34     | 3.78          | 59.06         | 1.94           | 20.96          |
 |                | RNG           | 0.37     | 0.28     | 0.46     | 0.33     | 3.75          | 58.05         | 1.91           | 20.38          |
 | **cv ($\mu / \sigma$)** |      | 6.6%     | 13.4%    | 7.1%     | 14.4%    | 1.3%          | 3.3%          | 1.9%           | 4.9%           |
-```
+
 
 You can copy and paste this Markdown code into your GitHub page, and it should display the table correctly.
