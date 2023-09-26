@@ -13,11 +13,12 @@ data can be found at = https://zenodo.org/record/7900964
 
 ## Requirements
 * tensorflow
-* tsl
-* numpy
-* pandas
-* cuda
-* networkx
+* torch==1.12.1
+* tsl==0.9.0
+* numpy==1.23.5
+* pandas==1.4.4
+* cuda toolkit==11.6
+* networkx==2.8.8
   
 ## Usage
 the inputs_la, input_bay, inputs_ci and inputs_cw files should be put in the sensor locations folder.
