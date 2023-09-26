@@ -2,6 +2,7 @@
 
 #### Authors: Stefan Bloemheuvel, Jurgen van den Hoogen and Martin Atzmueller
 
+![The proposed framework](location_or_data.png)
 [streamlit demo page, not all techniques from paper included](https://stefanbloemheuvel-graph-comparison-streamlit-app-dplan6.streamlit.app/)
 
 ## Data
