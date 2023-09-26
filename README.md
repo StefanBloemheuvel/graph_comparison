@@ -5,7 +5,7 @@
 ![The proposed framework](location_or_data.png)
 
 ## Streamlit Demo Page
-
+![The proposed framework](three_graphs.png)
 [Link to Streamlit demo page](https://stefanbloemheuvel-graph-comparison-streamlit-app-dplan6.streamlit.app/)
 
 ## Data
