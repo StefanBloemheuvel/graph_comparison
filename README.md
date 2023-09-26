@@ -13,7 +13,7 @@ data can be found at = https://zenodo.org/record/7900964
 
 The data can be found at the following "[Link]([https://arxiv.org/pdf/2201.06367.pdf](https://zenodo.org/record/7900964)". 
 
-This is the source code of WWW-2022 paper "[Towards Unsupervised Deep Graph Structure Learning](https://arxiv.org/pdf/2201.06367.pdf)" (SUBLIME).
+This is the source code of WWW-2022 paper "[Link](https://arxiv.org/pdf/2201.06367.pdf)" (SUBLIME).
 
 ## Requirements
 * tensorflow
