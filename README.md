@@ -60,6 +60,3 @@ The resulting MAE and MSE scores on 4 datasets, where CI and CW are time series 
 |                | Gabriel       | 0.36     | 0.28     | 0.46     | 0.34     | 3.78          | 59.06         | 1.94           | 20.96          |
 |                | RNG           | 0.37     | 0.28     | 0.46     | 0.33     | 3.75          | 58.05         | 1.91           | 20.38          |
 | **cv ($\mu / \sigma$)** |      | 6.6%     | 13.4%    | 7.1%     | 14.4%    | 1.3%          | 3.3%          | 1.9%           | 4.9%           |
-
-
-You can copy and paste this Markdown code into your GitHub page, and it should display the table correctly.
