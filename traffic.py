@@ -7,7 +7,6 @@ parser.add_argument('algorithm', help='Which algorithm to use', choices=['gabrie
 parser.add_argument('gnn_model', help='Which model to choose', choices=['timethenspace','dcrnn'])
 
 args = parser.parse_args()
-# args = parser.parse_args(args=[])
 print(args.dataset)
 print(args.algorithm)
 print(args.gnn_model)
@@ -96,8 +95,6 @@ if args.algorithm == 'gaussian':
     options_list = [round(i,2) for i in np.arange(0.05,0.95,0.05)]
 if args.algorithm == 'minmax':
     options_list = [round(i,2) for i in np.arange(0.05,0.95,0.05)]
-# if args.algorithm == 'correlation_top' or args.algorithm == 'correlation_new':
-    # options_list = [round(i,2) for i in np.arange(0.1,0.7,0.1)]
 if args.algorithm == 'dtw':
     options_list = [round(i,2) for i in np.arange(0.05,0.95,0.05)]
 if args.algorithm == 'mic':
@@ -144,8 +141,6 @@ for i in options_list:
     graph_generator_obj = graph_generator()
     if args.algorithm == 'gabriel':
         graph_generator_obj.gabriel(f'sensor_locations/sensor_locations_{args.dataset}.csv')
-    # if args.algorithm == 'kmeans_own':
-        # graph_generator_obj.kmeans_own(f'sensor_locations/sensor_locations_{args.dataset}.csv',num_clusters=i)
     if args.algorithm == 'optics':
         graph_generator_obj.optics(f'sensor_locations/sensor_locations_{args.dataset}.csv', min_samples=i)
     if args.algorithm == 'knn_weighted':
@@ -158,19 +153,10 @@ for i in options_list:
         # graph_generator_obj.dbscan(f'sensor_locations/sensor_locations_{args.dataset}.csv', eps=1, min_samples=i)
     if args.algorithm == 'gaussian':
         graph_generator_obj.gaussian(f'sensor_locations/sensor_locations_{args.dataset}.csv', normalized_k=i)
-    # if args.algorithm == 'gaussian':
-        # graph_generator_obj.gaussian(f'sensor_locations/sensor_locations_{args.dataset}.csv')
     if args.algorithm == 'relative_neighborhood':
         graph_generator_obj.relative_neighborhood(f'sensor_locations/sensor_locations_{args.dataset}.csv')
     if args.algorithm == 'kmeans':
-        graph_generator_obj.kmeans(f'sensor_locations/sensor_locations_{args.dataset}.csv', num_clusters=i)
-    # if args.algorithm == 'correlation_top':
-        # graph_generator_obj.correlation_top(f'sensor_locations/sensor_locations_{args.dataset}.csv', f'sensor_locations/inputs_{args.dataset}.npy',threshold=i)
-    # if args.algorithm == 'correlation_new':
-        # graph_generator_obj.correlation_new(f'sensor_locations/sensor_locations_{args.dataset}.csv', f'sensor_locations/inputs_{args.dataset}.npy',threshold=i)
-    # if args.algorithm == 'dtw':
-        # graph_generator_obj.dtw(f'sensor_locations/sensor_locations_{args.dataset}.csv', f'sensor_locations/inputs_{args.dataset}.npy',clips=True,threshold=i)
-    
+        graph_generator_obj.kmeans(f'sensor_locations/sensor_locations_{args.dataset}.csv', num_clusters=i)    
     if args.algorithm == 'dtw' or args.algorithm == 'correlation' or args.algorithm == 'mic' and args.dataset in ['la','bay','air']:
         print(f'went for clips')
         graph_generator_obj.from_signal(f'sensor_locations/sensor_locations_{args.dataset}.csv', f'sensor_locations/inputs_{args.dataset}.npy', variant=args.algorithm, clips=True,threshold=i)
@@ -178,13 +164,6 @@ for i in options_list:
     graph_generator_obj.create_adjacency_matrix(fill_diagonal = True)
     graph_generator_obj.summary_statistics()
     
-    # graph_generator_obj.create_normalized_laplacian_matrix()
-    # graph_generator_obj.summary_statistics()
-    
-    # if graph_generator_obj.number_of_edges == 0:
-        # print('no edges so no solution')
-        # print('\n' * 5)
-        # continue
     print(f'look here steef')
     print(graph_generator_obj.data.shape[0])
     print(nx.number_of_edges(graph_generator_obj.networkx_graph))
@@ -202,7 +181,7 @@ for i in options_list:
         print(f'number of edges is > {graph_generator_obj.data.shape[0]}, namely {graph_generator_obj.number_of_edges}')
         print('\n' * 5)
         
-    # adj2 = graph_generator_obj.normalized_laplacian_matrix
+
 
     print(f"Sampling period: {dataset.freq}\n"
         f"Has missing values: {dataset.has_mask}\n"
@@ -280,18 +259,12 @@ for i in options_list:
                             output_size=torch_dataset.n_channels,
                             horizon=torch_dataset.horizon)
 
-
-    # print(model_kwargs_timethenspace)
-
     loss_fn = MaskedMAE()
 
     metrics = {'mae': MaskedMAE(),
             'mape': MaskedMAPE(),
             'mse': MaskedMSE(),
             'mape': MaskedMAPE(),
-            # 'mae_at_15': MaskedMAE(at=2),  # `2` indicated the third time step, which correspond to 15 minutes ahead
-            # 'mae_at_30': MaskedMAE(at=5),
-            # 'mae_at_60': MaskedMAE(at=11), 
             }
 
     model_kwargs_timethenspace = {
@@ -300,13 +273,6 @@ for i in options_list:
         'hidden_size': 16,
         'rnn_layers': 1,
         'gcn_layers': 2
-    }
-
-    model_kwargs_dcrnn = {
-        'input_size': dm.n_channels,  # 1 channel
-        'horizon': dm.horizon,  # 12, the number of steps ahead to forecast
-        'hidden_size': 16,
-        'output_size':1
     }
 
     if args.gnn_model == 'timethenspace':
@@ -319,50 +285,7 @@ for i in options_list:
             loss_fn=loss_fn,
             metrics=metrics
         )
-    if args.gnn_model == 'dcrnn':
-        max_epochs = 50
-        predictor = Predictor(
-            model_class=DCRNNModel_manual,
-            model_kwargs=model_kwargs_dcrnn,
-            optim_class=torch.optim.Adam,
-            optim_kwargs={'lr': 0.003},
-            loss_fn=loss_fn,
-            metrics=metrics
-        )
 
-    # print()
-    # print('look here')
-    # print()
-    # print()
-    # sample = torch_dataset[0]
-    # print(sample)
-    # print(torch_dataset[0].pattern)
-    
-
-    # print(dir(TimeThenSpaceModel))
-    # print(predictor)
-    # summary(predictor, input_size=(64, 12, 207, 1))
-
-    # from torchsummary import summary
-
-
-    # summary(model, (1, 28, 28))
-    # summary_model = TimeThenSpaceModel(input_size=1, hidden_size=16, rnn_layers=1,gcn_layers=2,horizon=12)
-    # print('look at this =')
-    # device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # PyTorch v0.4.0
-    # print(device)
-    # model = summary_model.to(device)
-    # summary(model, (64, 12,207,1))
-    # summary(summary_model,(64,12, 207, 1), device='cpu')
-    # print('now try the following')
-    # from torchinfo import summary
-    # summary(summary_model,input_size=(12, 207, 1))
-    
-
-    # summary(summary_model, input_size=(64, 12, 207,1))
-
-    # logger = TensorBoardLogger(save_dir="logs", name="tsl_intro", version=0)
-    
 
     checkpoint_callback = ModelCheckpoint(
         dirpath='logs',
@@ -395,11 +318,6 @@ for i in options_list:
     print(df)
 
     del trainer
-    # df.insert(0,'dataset_name',args.dataset)
-    # df.insert(1,'graph_name',args.algorithm)
-    # df.insert(0,'time',dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-    # df.insert(3,'epochs',max_epochs)
-    # df.insert(4,'model',args.gnn_model)
-    # df.round(7).to_csv('results.csv', mode='a', index=False, header=False)
+    
     with open(f"epoch100.csv", "a") as text_file:
         print(f'{print_time()},{args.dataset},{args.algorithm},{i},{df["test_mse"].item():.5f},{df["test_mae"].item():.5f},{df["test_mape"].item():.5f},{graph_generator_obj.number_of_edges}', file=text_file)
